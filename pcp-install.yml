@@ -3,7 +3,23 @@
   hosts: pcp-hosts
   gather_facts: false
   vars:
+    # Services to be enabled/started
+    enable_services: 
+      - pmcd
+      - pmlogger
   tasks:
   # dnf install required pcp packages
+  - name: Install pcp packages
+    ansible.builtin.dnf:
+      name: pcp
+      state: latest
+
+  - name: Start and enable pcp services
+    ansible.builtin.service:
+      name: "{{ item }}"
+      state: started
+      enabled: true
+    loop: "{{ enable_services }}"
+      
+
   # configure pcp on host
-  
