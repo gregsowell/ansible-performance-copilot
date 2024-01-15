@@ -1,0 +1,9 @@
+---
+- name: Install/configure PCP on various hosts
+  hosts: pcp-hosts
+  gather_facts: false
+  vars:
+  tasks:
+  # dnf install required pcp packages
+  # configure pcp on host
+  
