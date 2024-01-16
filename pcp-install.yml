@@ -7,12 +7,29 @@
     enable_services: 
       - pmcd
       - pmlogger
+    
+    # Enable any additional agents
+    # pmda_extras:
+    #   - jbd2  
+    #   - kvm
+    #   - linux
+    #   - mmv
+    #   - overhead
+    #   - pipe
+    #   - pmcd
+    #   - proc
+    #   - root
+    #   - xfs
+    #   - zfs
   tasks:
   # dnf install required pcp packages
   - name: Install pcp packages
     ansible.builtin.dnf:
-      name: pcp
+      name: "{{ item }}"
       state: latest
+    loop:
+      - pcp
+      - pcp-system-tools
 
   - name: Start and enable pcp services
     ansible.builtin.service:
