@@ -52,6 +52,7 @@
       path: /etc/pcp/pmcd/pmcd.conf
       line: "allow hosts {{ item }} : fetch;"
       insertafter: '[access]'
+      insertbefore: 'disallow.*'
     loop: "{{ remote_subnets }}"
 
   - name: Start and enable pcp services
