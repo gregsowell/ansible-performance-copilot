@@ -36,12 +36,14 @@
     loop:
       - pcp
       - pcp-system-tools
-
+    notify: restart pcp
+    
   - name: Configure the pmcd process(add all of the allowed subnets)
     ansible.builtin.blockinfile:
       path: /etc/pcp/pmcd/pmcd.conf
       block: "{{ lookup('ansible.builtin.template', 'pmcd-access.j2') }}"
       insertafter: "\\[access\\]"
+    notify: restart pcp
 
   # - name: Configure the pmcd process(add all of the allowed subnets)
   #   ansible.builtin.lineinfile:
@@ -69,4 +71,11 @@
       name: "{{ item }}"
       state: started
       enabled: true
+    loop: "{{ enable_services }}"
+
+  handlers:
+  - name: restart pcp
+    ansible.builtin.service:
+      name: "{{ item }}"
+      state: restarted
     loop: "{{ enable_services }}"
