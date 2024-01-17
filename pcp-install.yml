@@ -58,7 +58,7 @@
       permanent: true
       immediate: true
       state: enabled
-    ignore_errors: false
+    ignore_errors: true
 
   - name: Enable selinux for pmcd
     ansible.builtin.shell: setsebool -P pcp_bind_all_unreserved_ports on
