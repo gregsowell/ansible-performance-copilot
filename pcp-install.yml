@@ -51,7 +51,8 @@
     ansible.builtin.lineinfile:
       path: /etc/pcp/pmcd/pmcd.conf
       line: "allow hosts {{ item }} : fetch;"
-      insertafter: '[access]'
+      # insertafter: '[access]'
+      firstmatch: true
       insertbefore: 'disallow.*'
     loop: "{{ remote_subnets }}"
 
