@@ -11,7 +11,7 @@
     # The subnets or ranges of hosts allowed to connect to clients to fetch info
     remote_subnets:
       - 10.0.*
-#      - 192.168.5.10
+      - 192.168.5.10
 #      - 1.1.1.1
 
     # Enable any additional agents
@@ -37,7 +37,7 @@
       - pcp
       - pcp-system-tools
     notify: restart pcp
-    
+
   - name: Configure the pmcd process(add all of the allowed subnets)
     ansible.builtin.blockinfile:
       path: /etc/pcp/pmcd/pmcd.conf
