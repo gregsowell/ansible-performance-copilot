@@ -36,16 +36,23 @@
       - pcp
       - pcp-system-tools
 
+#   - name: Configure the pmcd process(add all of the allowed subnets)
+#     ansible.builtin.blockinfile:
+#       path: /etc/pcp/pmcd/pmcd.conf
+#       block: |
+#         allow hosts {{ item }} : fetch;
+# #      marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+#     loop: "{{ remote_subnets }}"
+#       # - { name: host1, ip: 10.10.1.10 }
+#       # - { name: host2, ip: 10.10.1.11 }
+#       # - { name: host3, ip: 10.10.1.12 }
+
   - name: Configure the pmcd process(add all of the allowed subnets)
-    ansible.builtin.blockinfile:
+    ansible.builtin.lineinfile:
       path: /etc/pcp/pmcd/pmcd.conf
-      block: |
-        allow hosts {{ item }} : fetch;
-#      marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+      line: "allow hosts {{ item }} : fetch;"
+      insertafter: '[access]'
     loop: "{{ remote_subnets }}"
-      # - { name: host1, ip: 10.10.1.10 }
-      # - { name: host2, ip: 10.10.1.11 }
-      # - { name: host3, ip: 10.10.1.12 }
 
   - name: Start and enable pcp services
     ansible.builtin.service:
