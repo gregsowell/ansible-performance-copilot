@@ -52,12 +52,20 @@
   #     insertbefore: 'disallow.*'
   #   loop: "{{ remote_subnets }}"
 
+  - name: Enable pmcd listening ports on firewall
+    ansible.posix.firewalld:
+      port: 44321/tcp
+      permanent: true
+      immediate: true
+      state: enabled
+
+  - name: Enable selinux for pmcd
+    ansible.builtin.shell: setsebool -P pcp_bind_all_unreserved_ports on
+    ignore_errors: true
+
   - name: Start and enable pcp services
     ansible.builtin.service:
       name: "{{ item }}"
       state: started
       enabled: true
     loop: "{{ enable_services }}"
-      
-
-  # configure pcp on host
