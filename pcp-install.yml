@@ -8,6 +8,11 @@
       - pmcd
       - pmlogger
     
+    # The subnets or ranges of hosts allowed to connect to clients to fetch info
+    remote_subnets:
+      - 10.0.*
+      - 192.168.5.10
+
     # Enable any additional agents
     # pmda_extras:
     #   - jbd2  
@@ -30,6 +35,17 @@
     loop:
       - pcp
       - pcp-system-tools
+
+  - name: Configure the pmcd process(add all of the allowed subnets)
+    ansible.builtin.blockinfile:
+      path: /etc/pcp/pmcd/pmcd.conf
+      block: |
+        allow hosts {{ item }} : fetch;
+#      marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    loop: "{{ remote_subnets }}"
+      # - { name: host1, ip: 10.10.1.10 }
+      # - { name: host2, ip: 10.10.1.11 }
+      # - { name: host3, ip: 10.10.1.12 }
 
   - name: Start and enable pcp services
     ansible.builtin.service:
