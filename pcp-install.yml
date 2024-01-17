@@ -40,7 +40,7 @@
     ansible.builtin.blockinfile:
       path: /etc/pcp/pmcd/pmcd.conf
       block: "{{ lookup('ansible.builtin.template', 'pmcd-access.j2') }}"
-      insertafter: '[access]'
+      insertafter: '\\[access\\]'
 
   # - name: Configure the pmcd process(add all of the allowed subnets)
   #   ansible.builtin.lineinfile:
