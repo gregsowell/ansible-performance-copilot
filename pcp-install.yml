@@ -62,9 +62,12 @@
       state: enabled
     ignore_errors: true
 
-  - name: Enable selinux for pmcd
-    ansible.builtin.shell: setsebool -P pcp_bind_all_unreserved_ports on
+  - name: Enable selinux for pmcd services
+    ansible.builtin.shell: "{{ item }}"
     ignore_errors: true
+    loop:
+      - setsebool -P pcp_read_generic_logs on
+      - setsebool -P pcp_bind_all_unreserved_ports on
 
   - name: Start and enable pcp services
     ansible.builtin.service:
