@@ -1,0 +1,3 @@
+log advisory on every 1 minute {
+    {{ inventory_hostname }} n n PCP_LOG_DIR/pmlogger/{{ inventory_hostname }} -r -T24h10m -c config.default
+}
