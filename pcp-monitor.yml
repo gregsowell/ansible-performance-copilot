@@ -16,7 +16,11 @@
 # #      - 1.1.1.1
 
   tasks:
-  # dnf install required pcp packages
+  - name: debug data
+    ansible.builtin.debug:
+      var: hostvars[item]
+    loop: "{{ groups['pcp-hosts'] }}"
+
   - name: Install pcp packages
     ansible.builtin.dnf:
       name: "{{ item }}"
@@ -25,43 +29,6 @@
       - pcp
       - pcp-system-tools
     notify: restart pcp
-
-  # - name: Configure the pmcd process(add all of the allowed subnets)
-  #   ansible.builtin.blockinfile:
-  #     path: /etc/pcp/pmcd/pmcd.conf
-  #     block: "{{ lookup('ansible.builtin.template', 'pmcd-access.j2') }}"
-  #     insertafter: "\\[access\\]"
-  #   notify: restart pcp
-
-  # - name: Configure the pmcd process(add all of the allowed subnets)
-  #   ansible.builtin.lineinfile:
-  #     path: /etc/pcp/pmcd/pmcd.conf
-  #     line: "allow hosts {{ item }} : fetch;"
-  #     # insertafter: '[access]'
-  #     firstmatch: true
-  #     insertbefore: 'disallow.*'
-  #   loop: "{{ remote_subnets }}"
-
-  # - name: Enable pmcd listening ports on firewall
-  #   ansible.posix.firewalld:
-  #     port: 44321/tcp
-  #     permanent: true
-  #     immediate: true
-  #     state: enabled
-  #   ignore_errors: true
-
-  # - name: Enable selinux for pmcd services
-  #   ansible.builtin.shell: "{{ item }}"
-  #   ignore_errors: true
-  #   loop:
-  #     - setsebool -P pcp_read_generic_logs on
-  #     - setsebool -P pcp_bind_all_unreserved_ports on
-
-  # - name: Create config file for each pcp-host
-  #   ansible.builtin.copy:
-  #     content: "{{ lookup('ansible.builtin.template', 'pmlogger-monitor.j2') }}"
-  #     dest: "/etc/mine.conf/etc/pcp/pmlogger/control.d/{{ inventory_hostname }}"
-  #   loop: "{{ groups['pcp-hosts'] }}"
 
   - name: Create config file for each pcp-host
     ansible.builtin.template:
