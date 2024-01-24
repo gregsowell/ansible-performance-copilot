@@ -66,7 +66,7 @@
   - name: Create config file for each pcp-host
     ansible.builtin.template:
       src: pmlogger-monitor.j2
-      dest: "/etc/mine.conf/etc/pcp/pmlogger/control.d/{{ inventory_hostname }}"
+      dest: "/etc/pcp/pmlogger/control.d/{{ inventory_hostname }}"
     loop: "{{ groups['pcp-hosts'] }}"
     notify: restart pcp
     
