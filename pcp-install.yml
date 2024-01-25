@@ -45,14 +45,13 @@
       insertafter: "\\[access\\]"
     notify: restart pcp
 
-  # - name: Configure the pmcd process(add all of the allowed subnets)
-  #   ansible.builtin.lineinfile:
-  #     path: /etc/pcp/pmcd/pmcd.conf
-  #     line: "allow hosts {{ item }} : fetch;"
-  #     # insertafter: '[access]'
-  #     firstmatch: true
-  #     insertbefore: 'disallow.*'
-  #   loop: "{{ remote_subnets }}"
+  - name: Configure the pmcd options to listen on the correct IP
+    ansible.builtin.lineinfile:
+      path: /etc/pcp/pmcd/pmcd.options
+      line: "-i {{ hostvars[inventory_hostname].ansible_host }}"
+      # # insertafter: '[access]'
+      # firstmatch: true
+      # insertbefore: 'disallow.*'
 
   - name: Enable pmcd listening ports on firewall
     ansible.posix.firewalld:
