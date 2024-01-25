@@ -40,7 +40,7 @@
     ansible.builtin.file:
       path: "{{ collection_directory }}{{ item }}"
       state: directory
-      mode: '0755'
+      mode: '0777'
     loop: "{{ groups['pcp-hosts'] }}"
 
   - name: Start and enable pcp services
