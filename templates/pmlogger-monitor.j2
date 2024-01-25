@@ -1,9 +1,5 @@
 {% if config_via_host %}
-log advisory on every 1 minute {
-    {{ hostvars[item].ansible_host }} n n PCP_LOG_DIR/pmlogger/{{ item }} -r -T24h10m -c config.default
-}
+{{ hostvars[item].ansible_host }} n n PCP_LOG_DIR/pmlogger/{{ item }} -r -T24h10m -c config.{{ item }}
 {% else %}
-log advisory on every 1 minute {
-    {{ item }} n n PCP_LOG_DIR/pmlogger/{{ item }} -r -T24h10m -c config.default
-}
+{{ item }} n n PCP_LOG_DIR/pmlogger/{{ item }} -r -T24h10m -c config.{{ item }}
 {% endif %}
